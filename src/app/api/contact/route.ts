@@ -63,9 +63,8 @@ export async function POST(req: NextRequest) {
       .insert({
         full_name: body.fullName.trim(),
         email: body.email.toLowerCase().trim(),
-        subject: body.subject?.trim() || null,
         message: body.message.trim(),
-        status: "unread",
+        status: "new",
       });
 
     if (dbError) {
