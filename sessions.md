@@ -313,9 +313,34 @@ medway-soup-kitchen/
 - [x] ~~Vercel Deployment~~ - Completed
 - [x] ~~Domain Setup~~ - Completed (medwaysoupkitchen.co.uk)
 - [x] ~~Resend Domain Verification~~ - Already verified
-- [x] ~~Favicon~~ - Completed
+- [x] ~~Favicon~~ - Fixed (Session 3)
 - [x] ~~Email Templates~~ - Fixed and working with logo
 - [ ] **Stripe Integration** - Real payment processing for donations
+
+---
+
+## Session 3 - February 21, 2026 (Favicon Fix)
+
+**Issue:** Favicon not displaying in browser tabs
+
+**Root Cause:** The `.ico` format wasn't rendering properly in some browsers
+
+**Solution:**
+- Converted source image (`Favicon 2.jpg`) to PNG format
+- Created multiple sizes for compatibility:
+  - `favicon.png` (32x32)
+  - `favicon-16x16.png` (16x16)
+  - `apple-touch-icon.png` (180x180)
+- Updated `layout.tsx` metadata to explicitly reference PNG icons
+- Copied icons to `public/` folder
+
+**Files Changed:**
+- `src/app/layout.tsx` - Added explicit icons metadata
+- `public/favicon.png` - New 32x32 PNG
+- `public/favicon-16x16.png` - New 16x16 PNG
+- `public/apple-touch-icon.png` - New 180x180 PNG for Apple devices
+
+**Result:** Favicon now displays correctly across all browsers
 
 ---
 
