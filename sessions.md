@@ -129,13 +129,23 @@ CREATE TABLE newsletter_subscribers (
 
 ### Email Templates (Resend)
 
-| Template | Recipient | Trigger |
-|----------|-----------|---------|
-| `VolunteerWelcome.tsx` | Volunteer | After volunteer form submission |
-| `DonateThankYou.tsx` | Donor | After donation pledge |
-| `NewsletterWelcome.tsx` | Subscriber | After newsletter signup |
-| `AdminNotification.tsx` | Admin | All form submissions |
-| `ContactNotification.tsx` | Admin | Contact form submissions |
+Emails use **inline HTML templates** (not React components) for reliability.
+
+| Email | Recipient | Trigger |
+|-------|-----------|---------|
+| Volunteer Welcome | Volunteer | After volunteer form submission |
+| Volunteer Admin Notification | Admin | After volunteer form submission |
+| Donation Thank You | Donor | After donation pledge |
+| Donation Admin Notification | Admin | After donation pledge |
+| Newsletter Welcome | Subscriber | After newsletter signup |
+| Newsletter Admin Notification | Admin | After newsletter signup |
+| Contact Admin Notification | Admin | After contact form submission |
+
+**Email Design:**
+- Logo: `Full_logo_1.png` (hosted on site)
+- Header: Colored bar (blue/orange)
+- Body: White card on gray background
+- Footer: Company address
 
 ---
 
@@ -233,7 +243,40 @@ medway-soup-kitchen/
 
 ---
 
-### Deployment (Session 2 - February 21, 2026)
+### Session 2 - February 21, 2026 (Deployment & Email Fixes)
+
+**Deployed to Vercel:**
+- Logged into Vercel CLI as `medwaysoupkitchen`
+- Added all environment variables to production
+- Deployed to https://medway-soup-kitchen.vercel.app
+- Connected custom domain medwaysoupkitchen.co.uk
+
+**Fixed Form Submission Errors:**
+- Contact form: Removed `subject` column from insert (didn't exist in DB)
+- Changed status from 'unread' to 'new' to match schema
+
+**Fixed Email Delivery:**
+- React email templates were failing silently
+- Switched all API routes to use inline HTML templates instead
+- Fixed EMAIL_FROM env variable (had newline character corrupting sender display)
+
+**Email Template Design:**
+- Logo at top: `Full_logo_1.png`
+- Colored header bars (blue #1F82A1 for info, orange #FF8302 for actions)
+- Light gray background (#f3f4f6) with white card content
+- Orange accent border on message boxes
+- Footer with company address
+- "Reply" button linking to mailto
+
+**Forms Now Working:**
+- Contact form → Admin notification email
+- Volunteer form → Welcome email to volunteer + Admin notification
+- Donate form → Thank you email to donor + Admin notification
+- Newsletter form → Welcome email to subscriber + Admin notification
+
+---
+
+### Deployment Details
 
 **Vercel:**
 - Account: medwaysoupkitchen (medwaysoupkitchen@gmail.com)
@@ -271,6 +314,7 @@ medway-soup-kitchen/
 - [x] ~~Domain Setup~~ - Completed (medwaysoupkitchen.co.uk)
 - [x] ~~Resend Domain Verification~~ - Already verified
 - [x] ~~Favicon~~ - Completed
+- [x] ~~Email Templates~~ - Fixed and working with logo
 - [ ] **Stripe Integration** - Real payment processing for donations
 
 ---
