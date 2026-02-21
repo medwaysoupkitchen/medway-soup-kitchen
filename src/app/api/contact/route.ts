@@ -1,19 +1,37 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-server";
 import { resend } from "@/lib/resend";
-import ContactNotification from "@/emails/ContactNotification";
-import AdminNotification from "@/emails/AdminNotification";
 
 interface ContactData {
   fullName: string;
   email: string;
-  subject?: string;
   message: string;
 }
 
 function isValidEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
+}
+
+function getContactEmailHtml(fullName: string, email: string, message: string): string {
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="background-color: #1F82A1; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+        <h1 style="margin: 0; font-size: 24px;">New Contact Form Submission</h1>
+      </div>
+      <div style="background-color: #f9fafb; padding: 20px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
+        <p style="margin: 0 0 16px 0;"><strong>From:</strong> ${fullName}</p>
+        <p style="margin: 0 0 16px 0;"><strong>Email:</strong> <a href="mailto:${email}" style="color: #1F82A1;">${email}</a></p>
+        <div style="background-color: white; padding: 16px; border-left: 4px solid #FF8302; margin-top: 16px;">
+          <p style="margin: 0 0 8px 0;"><strong>Message:</strong></p>
+          <p style="margin: 0; white-space: pre-wrap;">${message}</p>
+        </div>
+        <div style="margin-top: 24px; text-align: center;">
+          <a href="mailto:${email}?subject=Re: Your enquiry to Medway Soup Kitchen" style="display: inline-block; background-color: #1F82A1; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">Reply to ${fullName}</a>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 export async function POST(req: NextRequest) {
@@ -84,35 +102,10 @@ export async function POST(req: NextRequest) {
         from: `Medway Soup Kitchen <${fromEmail}>`,
         to: adminEmail,
         subject: `New website enquiry from ${body.fullName}`,
-        react: ContactNotification({
-          fullName: body.fullName,
-          email: body.email,
-          subject: body.subject,
-          message: body.message,
-        }),
+        html: getContactEmailHtml(body.fullName, body.email, body.message),
       });
     } catch (emailError) {
       console.error("Failed to send contact notification:", emailError);
-    }
-
-    // Also send generic admin notification
-    try {
-      await resend.emails.send({
-        from: `Medway Soup Kitchen <${fromEmail}>`,
-        to: adminEmail,
-        subject: `[Alert] New contact form submission`,
-        react: AdminNotification({
-          type: "contact",
-          data: {
-            fullName: body.fullName,
-            email: body.email,
-            subject: body.subject || "No subject",
-            message: body.message,
-          },
-        }),
-      });
-    } catch (emailError) {
-      console.error("Failed to send admin notification:", emailError);
     }
 
     return NextResponse.json(

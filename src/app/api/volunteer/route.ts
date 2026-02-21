@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-server";
 import { resend } from "@/lib/resend";
-import VolunteerWelcome from "@/emails/VolunteerWelcome";
-import AdminNotification from "@/emails/AdminNotification";
 
 interface VolunteerData {
   fullName: string;
@@ -16,6 +14,53 @@ interface VolunteerData {
 function isValidEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
+}
+
+function getVolunteerWelcomeHtml(fullName: string, roles: string[]): string {
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="background-color: #1F82A1; color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
+        <h1 style="margin: 0; font-size: 24px;">Welcome to Medway Soup Kitchen!</h1>
+      </div>
+      <div style="background-color: #f9fafb; padding: 20px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
+        <p style="font-size: 16px; color: #374151;">Dear ${fullName},</p>
+        <p style="font-size: 16px; color: #374151;">Thank you so much for signing up to volunteer with us! Your willingness to help makes a real difference in our community.</p>
+        <div style="background-color: white; padding: 16px; border-left: 4px solid #FF8302; margin: 16px 0;">
+          <p style="margin: 0 0 8px 0; font-weight: bold; color: #374151;">You've signed up for:</p>
+          <ul style="margin: 0; padding-left: 20px; color: #4B5563;">
+            ${roles.map(role => `<li>${role}</li>`).join('')}
+          </ul>
+        </div>
+        <p style="font-size: 16px; color: #374151;">A member of our team will be in touch soon to discuss next steps and how you can get involved.</p>
+        <p style="font-size: 16px; color: #374151;">In the meantime, if you have any questions, feel free to reply to this email.</p>
+        <p style="font-size: 16px; color: #374151; margin-top: 24px;">With gratitude,<br><strong>The Medway Soup Kitchen Team</strong></p>
+      </div>
+    </div>
+  `;
+}
+
+function getAdminVolunteerHtml(data: VolunteerData): string {
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="background-color: #FF8302; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+        <h1 style="margin: 0; font-size: 24px;">New Volunteer Sign-up</h1>
+      </div>
+      <div style="background-color: #f9fafb; padding: 20px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
+        <p style="margin: 0 0 12px 0;"><strong>Name:</strong> ${data.fullName}</p>
+        <p style="margin: 0 0 12px 0;"><strong>Email:</strong> <a href="mailto:${data.email}" style="color: #1F82A1;">${data.email}</a></p>
+        <p style="margin: 0 0 12px 0;"><strong>Phone:</strong> ${data.phone || 'Not provided'}</p>
+        <p style="margin: 0 0 12px 0;"><strong>Roles:</strong> ${data.roles.join(', ')}</p>
+        <p style="margin: 0 0 12px 0;"><strong>Availability:</strong> ${data.availability || 'Not specified'}</p>
+        ${data.message ? `<div style="background-color: white; padding: 16px; border-left: 4px solid #1F82A1; margin-top: 16px;">
+          <p style="margin: 0 0 8px 0;"><strong>Message:</strong></p>
+          <p style="margin: 0; white-space: pre-wrap;">${data.message}</p>
+        </div>` : ''}
+        <div style="margin-top: 24px; text-align: center;">
+          <a href="mailto:${data.email}?subject=Welcome to Medway Soup Kitchen - Volunteer Enquiry" style="display: inline-block; background-color: #1F82A1; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">Contact ${data.fullName}</a>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 export async function POST(req: NextRequest) {
@@ -86,10 +131,7 @@ export async function POST(req: NextRequest) {
         from: `Medway Soup Kitchen <${fromEmail}>`,
         to: body.email,
         subject: "Welcome to Medway Soup Kitchen! Thank you for signing up",
-        react: VolunteerWelcome({
-          fullName: body.fullName,
-          roles: body.roles,
-        }),
+        html: getVolunteerWelcomeHtml(body.fullName, body.roles),
       });
     } catch (emailError) {
       console.error("Failed to send volunteer welcome email:", emailError);
@@ -103,17 +145,7 @@ export async function POST(req: NextRequest) {
         from: `Medway Soup Kitchen <${fromEmail}>`,
         to: adminEmail,
         subject: `New volunteer sign-up: ${body.fullName}`,
-        react: AdminNotification({
-          type: "volunteer",
-          data: {
-            fullName: body.fullName,
-            email: body.email,
-            phone: body.phone || "Not provided",
-            roles: body.roles,
-            availability: body.availability || "Not specified",
-            message: body.message || "No message",
-          },
-        }),
+        html: getAdminVolunteerHtml(body),
       });
     } catch (emailError) {
       console.error("Failed to send admin notification:", emailError);

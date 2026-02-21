@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-server";
 import { resend } from "@/lib/resend";
-import DonateThankYou from "@/emails/DonateThankYou";
-import AdminNotification from "@/emails/AdminNotification";
 
 interface DonateData {
   fullName: string;
@@ -16,6 +14,48 @@ interface DonateData {
 function isValidEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
+}
+
+function getDonateThankYouHtml(fullName: string, amount: string, frequency: string): string {
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="background-color: #FF8302; color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
+        <h1 style="margin: 0; font-size: 24px;">Thank You for Your Support!</h1>
+      </div>
+      <div style="background-color: #f9fafb; padding: 20px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
+        <p style="font-size: 16px; color: #374151;">Dear ${fullName},</p>
+        <p style="font-size: 16px; color: #374151;">Thank you so much for your generous pledge of <strong>${amount}</strong> (${frequency}). Your support means the world to us and will help us continue serving meals to those in need across Medway.</p>
+        <div style="background-color: white; padding: 16px; border-left: 4px solid #1F82A1; margin: 16px 0;">
+          <p style="margin: 0; font-size: 14px; color: #4B5563;">A member of our team will be in touch shortly with payment details. If you have any questions in the meantime, please don't hesitate to reply to this email.</p>
+        </div>
+        <p style="font-size: 16px; color: #374151;">Every contribution helps us provide freshly prepared meals and support to our community.</p>
+        <p style="font-size: 16px; color: #374151; margin-top: 24px;">With heartfelt thanks,<br><strong>The Medway Soup Kitchen Team</strong></p>
+      </div>
+    </div>
+  `;
+}
+
+function getAdminDonateHtml(data: DonateData, displayAmount: string): string {
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <div style="background-color: #FF8302; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+        <h1 style="margin: 0; font-size: 24px;">New Donation Pledge!</h1>
+      </div>
+      <div style="background-color: #f9fafb; padding: 20px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
+        <p style="margin: 0 0 12px 0;"><strong>Name:</strong> ${data.fullName}</p>
+        <p style="margin: 0 0 12px 0;"><strong>Email:</strong> <a href="mailto:${data.email}" style="color: #1F82A1;">${data.email}</a></p>
+        <p style="margin: 0 0 12px 0;"><strong>Amount:</strong> ${displayAmount}</p>
+        <p style="margin: 0 0 12px 0;"><strong>Frequency:</strong> ${data.frequency === "monthly" ? "Monthly" : "One-off"}</p>
+        ${data.message ? `<div style="background-color: white; padding: 16px; border-left: 4px solid #1F82A1; margin-top: 16px;">
+          <p style="margin: 0 0 8px 0;"><strong>Message:</strong></p>
+          <p style="margin: 0; white-space: pre-wrap;">${data.message}</p>
+        </div>` : ''}
+        <div style="margin-top: 24px; text-align: center;">
+          <a href="mailto:${data.email}?subject=Thank you for your donation pledge - Medway Soup Kitchen" style="display: inline-block; background-color: #1F82A1; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">Contact ${data.fullName}</a>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 export async function POST(req: NextRequest) {
@@ -91,44 +131,32 @@ export async function POST(req: NextRequest) {
     const fromEmail = process.env.EMAIL_FROM || "noreply@medwaysoupkitchen.co.uk";
     const adminEmail = process.env.ADMIN_EMAIL || "hello@medwaysoupkitchen.co.uk";
 
+    const displayAmount =
+      body.amountTier === "custom"
+        ? `£${body.customAmount}`
+        : `£${body.amountTier}`;
+
+    const frequencyText = body.frequency === "monthly" ? "monthly" : "one-off";
+
     // Send thank you email to donor
     try {
       await resend.emails.send({
         from: `Medway Soup Kitchen <${fromEmail}>`,
         to: body.email,
         subject: "Thank you for your support | Medway Soup Kitchen",
-        react: DonateThankYou({
-          fullName: body.fullName,
-          amountTier: body.amountTier,
-          customAmount: body.customAmount,
-          frequency: body.frequency,
-        }),
+        html: getDonateThankYouHtml(body.fullName, displayAmount, frequencyText),
       });
     } catch (emailError) {
       console.error("Failed to send donation thank you email:", emailError);
     }
 
     // Send admin notification
-    const displayAmount =
-      body.amountTier === "custom"
-        ? `£${body.customAmount} (custom)`
-        : `£${body.amountTier}`;
-
     try {
       await resend.emails.send({
         from: `Medway Soup Kitchen <${fromEmail}>`,
         to: adminEmail,
         subject: `New donation pledge: ${displayAmount} from ${body.fullName}`,
-        react: AdminNotification({
-          type: "donation",
-          data: {
-            fullName: body.fullName,
-            email: body.email,
-            amount: displayAmount,
-            frequency: body.frequency === "monthly" ? "Monthly" : "One-off",
-            message: body.message || "No message",
-          },
-        }),
+        html: getAdminDonateHtml(body, displayAmount),
       });
     } catch (emailError) {
       console.error("Failed to send admin notification:", emailError);
