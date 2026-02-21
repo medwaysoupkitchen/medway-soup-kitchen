@@ -34,8 +34,11 @@ export const metadata: Metadata = {
     "Street Angels",
   ],
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-icon.jpg",
+    icon: [
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
   },
   openGraph: {
     title: "Medway Soup Kitchen CIC | Serving Our Own",
