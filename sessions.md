@@ -233,13 +233,45 @@ medway-soup-kitchen/
 
 ---
 
+### Deployment (Session 2 - February 21, 2026)
+
+**Vercel:**
+- Account: medwaysoupkitchen (medwaysoupkitchen@gmail.com)
+- Project: medway-soup-kitchen
+- URL: https://medway-soup-kitchen.vercel.app
+
+**Custom Domain:**
+- Primary: https://medwaysoupkitchen.co.uk
+- WWW: https://www.medwaysoupkitchen.co.uk
+- DNS: A records pointing to `76.76.21.21` (configured at one.com)
+
+**Environment Variables (Vercel Production):**
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `RESEND_API_KEY`
+- `ADMIN_EMAIL`
+- `EMAIL_FROM`
+
+**Resend Domain:**
+- Status: Verified
+- Region: eu-west-1
+- Sending: Enabled
+
+**Favicon:**
+- Added `src/app/icon.jpg` (browser tab)
+- Added `src/app/apple-icon.jpg` (Apple devices)
+- Source: `public/Favicon 2.jpg`
+
+---
+
 ### Pending Tasks
 
-- [ ] **Vercel Deployment** - Connect GitHub repo, add environment variables
-- [ ] **Domain Setup** - Point medwaysoupkitchen.co.uk to Vercel
-- [ ] **Resend Domain Verification** - Add DNS records for email sending
+- [x] ~~Vercel Deployment~~ - Completed
+- [x] ~~Domain Setup~~ - Completed (medwaysoupkitchen.co.uk)
+- [x] ~~Resend Domain Verification~~ - Already verified
+- [x] ~~Favicon~~ - Completed
 - [ ] **Stripe Integration** - Real payment processing for donations
-- [ ] **Favicon** - Set up proper favicon from provided images
 
 ---
 
@@ -260,8 +292,9 @@ git add . && git commit -m "message" && git push
 
 ### Notes
 
+- **Site is LIVE** at https://medwaysoupkitchen.co.uk
 - Current donation system is **pledge-based** (no real payments)
 - Forms save to Supabase and send emails via Resend
-- All emails come from hello@medwaysoupkitchen.co.uk (requires domain verification)
+- Emails send from hello@medwaysoupkitchen.co.uk (domain verified)
 - Mobile responsive design with hamburger menu
 - Scroll animations using Intersection Observer
