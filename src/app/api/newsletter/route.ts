@@ -19,20 +19,31 @@ function getNewsletterWelcomeHtml(email: string): string {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin: 0; padding: 0; background-color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 560px; margin: 0 auto; padding: 40px 20px;">
+<body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: Arial, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; padding: 20px;">
     <tr>
       <td>
-        <h1 style="font-size: 20px; font-weight: 600; color: #111827; margin: 0 0 24px 0;">You're subscribed</h1>
-
-        <p style="font-size: 15px; color: #374151; line-height: 1.6; margin: 0 0 24px 0;">Thank you for subscribing to updates from Medway Soup Kitchen. You'll receive occasional emails about our work, upcoming events, and ways to get involved.</p>
-
-        <p style="font-size: 13px; color: #6b7280; margin: 0 0 4px 0;">Subscribed email</p>
-        <p style="font-size: 15px; color: #111827; margin: 0 0 24px 0;">${email}</p>
-
-        <p style="font-size: 15px; color: #374151; margin: 0;">Best,<br>The Medway Soup Kitchen Team</p>
-
-        <p style="font-size: 12px; color: #9ca3af; margin: 32px 0 0 0; padding-top: 24px; border-top: 1px solid #e5e7eb;">Medway Soup Kitchen CIC<br>4 High Street, Chatham, ME4 4EP</p>
+        <div style="text-align: center; padding: 24px 0;">
+          <img src="https://medwaysoupkitchen.co.uk/Full_logo_6.png" alt="Medway Soup Kitchen" style="height: 60px; width: auto;">
+        </div>
+        <div style="background-color: #1F82A1; color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
+          <h1 style="margin: 0; font-size: 24px;">Welcome to Our Newsletter!</h1>
+        </div>
+        <div style="background-color: #ffffff; padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
+          <p style="font-size: 16px; color: #374151;">Thank you for subscribing to the Medway Soup Kitchen newsletter!</p>
+          <p style="font-size: 16px; color: #374151;">You'll now receive updates about:</p>
+          <ul style="font-size: 16px; color: #4B5563;">
+            <li>Our upcoming events and meal distributions</li>
+            <li>Volunteer opportunities</li>
+            <li>Stories from our community</li>
+            <li>Ways you can help make a difference</li>
+          </ul>
+          <div style="background-color: #f9fafb; padding: 16px; border-left: 4px solid #FF8302; margin: 16px 0;">
+            <p style="margin: 0; font-size: 14px; color: #4B5563;">Your email: <strong>${email}</strong></p>
+          </div>
+          <p style="font-size: 16px; color: #374151; margin-top: 24px;">Thank you for your support,<br><strong>The Medway Soup Kitchen Team</strong></p>
+        </div>
+        <p style="text-align: center; font-size: 12px; color: #6b7280; margin-top: 24px;">Medway Soup Kitchen CIC | 4 High Street, Chatham, ME4 4EP</p>
       </td>
     </tr>
   </table>
@@ -49,17 +60,21 @@ function getAdminNewsletterHtml(email: string): string {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin: 0; padding: 0; background-color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 560px; margin: 0 auto; padding: 40px 20px;">
+<body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: Arial, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; padding: 20px;">
     <tr>
       <td>
-        <p style="font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 8px 0;">New Subscriber</p>
-        <h1 style="font-size: 20px; font-weight: 600; color: #111827; margin: 0 0 24px 0;">${email}</h1>
-
-        <p style="font-size: 13px; color: #6b7280; margin: 0 0 4px 0;">Source</p>
-        <p style="font-size: 15px; color: #111827; margin: 0;">Website footer</p>
-
-        <p style="font-size: 12px; color: #9ca3af; margin: 32px 0 0 0; padding-top: 24px; border-top: 1px solid #e5e7eb;">Medway Soup Kitchen CIC</p>
+        <div style="text-align: center; padding: 24px 0;">
+          <img src="https://medwaysoupkitchen.co.uk/Full_logo_6.png" alt="Medway Soup Kitchen" style="height: 60px; width: auto;">
+        </div>
+        <div style="background-color: #1F82A1; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+          <h1 style="margin: 0; font-size: 24px;">New Newsletter Subscriber</h1>
+        </div>
+        <div style="background-color: #ffffff; padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
+          <p style="margin: 0 0 12px 0;"><strong>Email:</strong> <a href="mailto:${email}" style="color: #1F82A1;">${email}</a></p>
+          <p style="margin: 0 0 12px 0;"><strong>Source:</strong> Website footer</p>
+        </div>
+        <p style="text-align: center; font-size: 12px; color: #6b7280; margin-top: 24px;">Medway Soup Kitchen CIC | 4 High Street, Chatham, ME4 4EP</p>
       </td>
     </tr>
   </table>

@@ -24,24 +24,30 @@ function getVolunteerWelcomeHtml(fullName: string, roles: string[]): string {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin: 0; padding: 0; background-color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 560px; margin: 0 auto; padding: 40px 20px;">
+<body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: Arial, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; padding: 20px;">
     <tr>
       <td>
-        <h1 style="font-size: 20px; font-weight: 600; color: #111827; margin: 0 0 24px 0;">Thank you for volunteering</h1>
-
-        <p style="font-size: 15px; color: #374151; line-height: 1.6; margin: 0 0 16px 0;">Hi ${fullName},</p>
-
-        <p style="font-size: 15px; color: #374151; line-height: 1.6; margin: 0 0 24px 0;">Thank you for signing up to volunteer with Medway Soup Kitchen. Your support means a lot to us and our community.</p>
-
-        <p style="font-size: 13px; color: #6b7280; margin: 0 0 8px 0;">You signed up for</p>
-        <p style="font-size: 15px; color: #111827; margin: 0 0 24px 0;">${roles.join(', ')}</p>
-
-        <p style="font-size: 15px; color: #374151; line-height: 1.6; margin: 0 0 24px 0;">We'll be in touch soon with next steps. If you have any questions, just reply to this email.</p>
-
-        <p style="font-size: 15px; color: #374151; margin: 0;">Best,<br>The Medway Soup Kitchen Team</p>
-
-        <p style="font-size: 12px; color: #9ca3af; margin: 32px 0 0 0; padding-top: 24px; border-top: 1px solid #e5e7eb;">Medway Soup Kitchen CIC<br>4 High Street, Chatham, ME4 4EP</p>
+        <div style="text-align: center; padding: 24px 0;">
+          <img src="https://medwaysoupkitchen.co.uk/Full_logo_6.png" alt="Medway Soup Kitchen" style="height: 60px; width: auto;">
+        </div>
+        <div style="background-color: #1F82A1; color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center;">
+          <h1 style="margin: 0; font-size: 24px;">Welcome to Medway Soup Kitchen!</h1>
+        </div>
+        <div style="background-color: #ffffff; padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
+          <p style="font-size: 16px; color: #374151;">Dear ${fullName},</p>
+          <p style="font-size: 16px; color: #374151;">Thank you so much for signing up to volunteer with us! Your willingness to help makes a real difference in our community.</p>
+          <div style="background-color: #f9fafb; padding: 16px; border-left: 4px solid #FF8302; margin: 16px 0;">
+            <p style="margin: 0 0 8px 0; font-weight: bold; color: #374151;">You've signed up for:</p>
+            <ul style="margin: 0; padding-left: 20px; color: #4B5563;">
+              ${roles.map(role => `<li>${role}</li>`).join('')}
+            </ul>
+          </div>
+          <p style="font-size: 16px; color: #374151;">A member of our team will be in touch soon to discuss next steps and how you can get involved.</p>
+          <p style="font-size: 16px; color: #374151;">In the meantime, if you have any questions, feel free to reply to this email.</p>
+          <p style="font-size: 16px; color: #374151; margin-top: 24px;">With gratitude,<br><strong>The Medway Soup Kitchen Team</strong></p>
+        </div>
+        <p style="text-align: center; font-size: 12px; color: #6b7280; margin-top: 24px;">Medway Soup Kitchen CIC | 4 High Street, Chatham, ME4 4EP</p>
       </td>
     </tr>
   </table>
@@ -58,49 +64,31 @@ function getAdminVolunteerHtml(data: VolunteerData): string {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin: 0; padding: 0; background-color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 560px; margin: 0 auto; padding: 40px 20px;">
+<body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: Arial, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; padding: 20px;">
     <tr>
       <td>
-        <p style="font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 8px 0;">New Volunteer</p>
-        <h1 style="font-size: 20px; font-weight: 600; color: #111827; margin: 0 0 24px 0;">${data.fullName}</h1>
-
-        <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
-          <tr>
-            <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-              <span style="font-size: 13px; color: #6b7280;">Email</span><br>
-              <a href="mailto:${data.email}" style="font-size: 15px; color: #1F82A1; text-decoration: none;">${data.email}</a>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-              <span style="font-size: 13px; color: #6b7280;">Phone</span><br>
-              <span style="font-size: 15px; color: #111827;">${data.phone || 'Not provided'}</span>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-              <span style="font-size: 13px; color: #6b7280;">Roles</span><br>
-              <span style="font-size: 15px; color: #111827;">${data.roles.join(', ')}</span>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-              <span style="font-size: 13px; color: #6b7280;">Availability</span><br>
-              <span style="font-size: 15px; color: #111827;">${data.availability || 'Not specified'}</span>
-            </td>
-          </tr>
-          ${data.message ? `<tr>
-            <td style="padding: 12px 0; border-bottom: 1px solid #e5e7eb;">
-              <span style="font-size: 13px; color: #6b7280;">Message</span><br>
-              <span style="font-size: 15px; color: #111827; white-space: pre-wrap;">${data.message}</span>
-            </td>
-          </tr>` : ''}
-        </table>
-
-        <a href="mailto:${data.email}?subject=Volunteer Application - Medway Soup Kitchen" style="display: inline-block; background-color: #1F82A1; color: #ffffff; font-size: 14px; font-weight: 500; text-decoration: none; padding: 10px 20px; border-radius: 6px;">Reply</a>
-
-        <p style="font-size: 12px; color: #9ca3af; margin: 32px 0 0 0; padding-top: 24px; border-top: 1px solid #e5e7eb;">Medway Soup Kitchen CIC</p>
+        <div style="text-align: center; padding: 24px 0;">
+          <img src="https://medwaysoupkitchen.co.uk/Full_logo_6.png" alt="Medway Soup Kitchen" style="height: 60px; width: auto;">
+        </div>
+        <div style="background-color: #FF8302; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+          <h1 style="margin: 0; font-size: 24px;">New Volunteer Sign-up</h1>
+        </div>
+        <div style="background-color: #ffffff; padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
+          <p style="margin: 0 0 12px 0;"><strong>Name:</strong> ${data.fullName}</p>
+          <p style="margin: 0 0 12px 0;"><strong>Email:</strong> <a href="mailto:${data.email}" style="color: #1F82A1;">${data.email}</a></p>
+          <p style="margin: 0 0 12px 0;"><strong>Phone:</strong> ${data.phone || 'Not provided'}</p>
+          <p style="margin: 0 0 12px 0;"><strong>Roles:</strong> ${data.roles.join(', ')}</p>
+          <p style="margin: 0 0 12px 0;"><strong>Availability:</strong> ${data.availability || 'Not specified'}</p>
+          ${data.message ? `<div style="background-color: #f9fafb; padding: 16px; border-left: 4px solid #1F82A1; margin-top: 16px;">
+            <p style="margin: 0 0 8px 0;"><strong>Message:</strong></p>
+            <p style="margin: 0; white-space: pre-wrap; color: #374151;">${data.message}</p>
+          </div>` : ''}
+          <div style="margin-top: 24px; text-align: center;">
+            <a href="mailto:${data.email}?subject=Welcome to Medway Soup Kitchen - Volunteer Enquiry" style="display: inline-block; background-color: #1F82A1; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Contact ${data.fullName}</a>
+          </div>
+        </div>
+        <p style="text-align: center; font-size: 12px; color: #6b7280; margin-top: 24px;">Medway Soup Kitchen CIC | 4 High Street, Chatham, ME4 4EP</p>
       </td>
     </tr>
   </table>
