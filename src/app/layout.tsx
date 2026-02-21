@@ -33,6 +33,10 @@ export const metadata: Metadata = {
     "Rochester",
     "Street Angels",
   ],
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-icon.jpg",
+  },
   openGraph: {
     title: "Medway Soup Kitchen CIC | Serving Our Own",
     description:
