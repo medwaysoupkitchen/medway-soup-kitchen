@@ -26,7 +26,7 @@ function getContactEmailHtml(fullName: string, email: string, message: string): 
     <tr>
       <td>
         <div style="text-align: center; padding: 24px 0;">
-          <img src="https://medwaysoupkitchen.co.uk/Full_logo_6.png" alt="Medway Soup Kitchen" style="height: 60px; width: auto;">
+          <img src="https://medwaysoupkitchen.co.uk/Full_logo_1.png" alt="Medway Soup Kitchen" style="height: 60px; width: auto;">
         </div>
         <div style="background-color: #1F82A1; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
           <h1 style="margin: 0; font-size: 24px;">New Contact Form Submission</h1>
